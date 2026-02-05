@@ -29,7 +29,7 @@
 // browser me http://localhost:3000 pe jaoge to is server ko access kr paoge
 // abhi server koi output nahi de rha because we havn't programmed it to give responses
 
-const express = require("express"); // express ki functioanlities use kr skenge express const ka use krke
+const express = require('express'); // express ki functioanlities use kr skenge express const ka use krke
 const app = express(); // server created using express() and stored in app const, server created not started
 
 app.listen(3000); // server started on port 3000

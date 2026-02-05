@@ -25,11 +25,11 @@ app.delete("/notes/:index", (req, res) => {
   delete notes[req.params.index];
 
   res.status(204).json({
-    message: "Note deeted succesfully",
+    message: "Note deleted succesfully",
   });
 });
 
-// To delete a note partially only description
+// To update a note partially only description
 app.patch("/notes/:index", (req, res) => {
   notes[req.params.index].description = req.body.description;
 
