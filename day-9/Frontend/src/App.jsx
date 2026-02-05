@@ -16,11 +16,13 @@ function App() {
   function fetchNotes() {
     // Sare notes ko laane ke liye
     // Ye request krenge tab CORS error ayega, isko mitigate krne ke liye-> backend me cors package install krke, app.js me cors require krke, is middelware ko use kr lo, app.use(cors()); jis se server CORS requests accept and respond kr paega
-    axios.get("http://localhost:3000/api/notes").then((res) => {
-      // console.log(res.data.notes);
-      // database se notes ka data aa jane pe notes statevariable me value de di jaegi
-      setNotes(res.data.notes);
-    });
+    axios
+      .get("https://learning-backend-lvt0.onrender.com/api/notes")
+      .then((res) => {
+        // console.log(res.data.notes);
+        // database se notes ka data aa jane pe notes statevariable me value de di jaegi
+        setNotes(res.data.notes);
+      });
   }
 
   // By default ek bar fetchNotes call ho jaega, jab page load hoga tab
@@ -39,7 +41,7 @@ function App() {
     if (!editMode) {
       // Form submit pe ye POST api request call hogi, and ek note save ho jaega.
       axios
-        .post("http://localhost:3000/api/notes", {
+        .post("https://learning-backend-lvt0.onrender.com/api/notes", {
           title: title.value,
           description: description.value,
         })
@@ -51,10 +53,13 @@ function App() {
         });
     } else {
       axios
-        .patch(`http://localhost:3000/api/notes/${currentId}`, {
-          title: title.value,
-          description: description.value,
-        })
+        .patch(
+          `https://learning-backend-lvt0.onrender.com/api/notes/${currentId}`,
+          {
+            title: title.value,
+            description: description.value,
+          },
+        )
         .then((res) => {
           console.log(res.data);
           fetchNotes();
@@ -67,10 +72,12 @@ function App() {
 
   // Note pe delete btn click krne pe
   function deleteHandler(id) {
-    axios.delete(`http://localhost:3000/api/notes/${id}`).then((res) => {
-      console.log(res.data.message);
-      fetchNotes();
-    });
+    axios
+      .delete(`https://learning-backend-lvt0.onrender.com/api/notes/${id}`)
+      .then((res) => {
+        console.log(res.data.message);
+        fetchNotes();
+      });
   }
 
   // Homework Patch (modify note) vala code likho
