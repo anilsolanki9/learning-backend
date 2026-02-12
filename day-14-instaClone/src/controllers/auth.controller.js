@@ -1,5 +1,6 @@
 const userModel = require("../models/user.model");
-const crypto = require("crypto");
+// const crypto = require("crypto"); // a very low level pckage, we use bcryptjs insteed
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 async function registerController(req, res) {
@@ -18,7 +19,9 @@ async function registerController(req, res) {
   }
 
   // encrypt the password using sha256 algorithm and store the hash in the database
-  const hash = crypto.createHash("sha256").update(password).digest("hex");
+  // const hash = crypto.createHash("sha256").update(password).digest("hex"); // use bcrypt insteed
+
+  const hash = await bcrypt.hash(password, 10); // here 10 is salt number
 
   // if the user does not exist then we will create a new user in the database
   const user = await userModel.create({
@@ -69,8 +72,11 @@ async function loginController(req, res) {
   }
 
   // is user exist then we will compare the password with the hash stored in the database
-  const hash = crypto.createHash("sha256").update(password).digest("hex");
-  const isPasswordValid = hash === user.password;
+  // const hash = crypto.createHash("sha256").update(password).digest("hex"); // use bcrypt instead
+  // const isPasswordValid = hash === user.password;
+
+  // password ko hash me convert krke data hai, and database me saved hash se compare krta hai
+  const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!isPasswordValid) {
     return res.status(401).json({
