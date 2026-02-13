@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const postSchema = new mongoose.Schema({
-  captio: {
+  caption: {
     type: String,
     default: "",
   },
@@ -16,11 +16,13 @@ const postSchema = new mongoose.Schema({
   },
 });
 
+/*
 // This tells that jo id ayegi wo kis collection se ayegi
 // ref: "users",
 
 // and this tells that user store a value of type  Mongoose schema object id
 // type: mongoose.Schema.Types.ObjectId,
+*/
 
 const postModel = mongoose.model("posts", postSchema);
 
