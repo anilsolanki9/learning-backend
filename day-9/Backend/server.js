@@ -1,9 +1,13 @@
-// This file has two tasks
-// - Server start krna
-// - Database se connect krna
+/**
+ * This file has two tasks
+ * Server start krna
+ * Database se connect krna
+ */
 
-// Tis enables the access of env variables
-// Make sure this is first line in server.js
+/**
+ * This enables the access of env variables
+ * Make sure this is first line in server.js
+ */
 require('dotenv').config();
 
 // importing app server
