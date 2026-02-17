@@ -1,3 +1,8 @@
+/**
+ * Server create krna
+ * Server config krna
+ */
+
 const express = require("express");
 
 const app = express();

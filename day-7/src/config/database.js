@@ -1,3 +1,7 @@
+/**
+ * Database se connect krne vala logic likhenge isme
+ */
+
 const mongoose = require('mongoose');
 
 function connectToDb() {

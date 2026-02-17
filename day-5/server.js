@@ -1,3 +1,9 @@
+/**
+ * This file have two tasks
+ * Server start krna
+ * Database se connect krna
+ */
+
 const app = require("./src/app");
 
 app.listen(3000, () => {
