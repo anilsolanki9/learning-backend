@@ -1,8 +1,11 @@
 const mongoose = require("mongoose");
 
-// Unique add krne ke bad server band krke fir se start krna hi pdega. Aisa krne se h mongodb me validation (indexes) me add ho jaega.
-// This shows internal server error, and we never give such errors. 
-// Thus we don't config our API response and check if user already exists or not. 
+/**
+ * Unique=> true,  add krne ke bad server band krke fir se start krna hi pdega.
+ * Aisa krne se h mongodb me validation (indexes) me add ho jaega.
+ * This shows internal server error(mongoose error), and we never give such errors.
+ * Thus we config our API response and check if user already exists or not.
+ */
 
 const userSchema = new mongoose.Schema({
   name: String,

@@ -6,7 +6,8 @@ const jwt = require("jsonwebtoken");
 async function registerController(req, res) {
   const { username, email, password, bio, profileImage } = req.body;
 
-  // first check if the user with the given data already exists in the database, username and email was unique so we will check for both of them
+  // check if user already exists with given email / username or not
+  // $or operator is used to check for multiple conditions
   const isUserExist = await userModel.findOne({
     $or: [{ username: username }, { email: email }],
   });
@@ -14,7 +15,7 @@ async function registerController(req, res) {
   // if the user already exists then we will send a response back to the client with a message that the user already exists
   if (isUserExist) {
     return res.status(409).json({
-      message: `User already exist ${isUserExist.email === email ? "with this email." : "with this user."}`,
+      message: `User already exist ${isUserExist.email === email ? "with this email." : "with this username."}`,
     });
   }
 
@@ -60,7 +61,8 @@ async function registerController(req, res) {
 async function loginController(req, res) {
   const { username, email, password } = req.body;
 
-  // first check if the user with the given data already exists in the database, username and email was unique so we will check for both of them
+  // check if user existr or not, with the given email or username.
+  // if exist then it will get saved in user variable, otherwise it will be null
   const user = await userModel.findOne({
     $or: [{ username: username }, { email: email }],
   });
@@ -104,6 +106,8 @@ async function loginController(req, res) {
     user: {
       username: user.username,
       email: user.email,
+      bio: user.bio,
+      profileImage: user.profileImage,
     },
   });
 }
