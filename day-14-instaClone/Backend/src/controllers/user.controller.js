@@ -109,6 +109,7 @@ async function getFolloweesController(req, res) {
     });
 }
 
+// Pending follow requests ko dekhte h.
 async function pendingFollowRequestsController(req, res) {
     const username = req.user.username;
 
@@ -123,6 +124,7 @@ async function pendingFollowRequestsController(req, res) {
     });
 }
 
+// follow request accept krne ke liye.
 async function acceptFollowRequestController(req, res) {
     const follower = req.params.follower; // Jiski follow request accept krni hai.
     const followee = req.user.username; // Jo follow request accept kr rha hai.
@@ -148,6 +150,7 @@ async function acceptFollowRequestController(req, res) {
     });
 }
 
+// reject follow request.
 async function rejectFollowRequestController(req, res) {
     const follower = req.params.follower;
     const followee = req.user.username;

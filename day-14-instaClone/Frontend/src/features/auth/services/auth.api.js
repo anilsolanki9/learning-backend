@@ -1,0 +1,44 @@
+// Auth se related API ka sara code yaha likhenge
+import axios from "axios";
+
+// To remove repetition, we create this
+const api = axios.create({
+  baseURL: "http://localhost:3000/api/auth",
+  withCredentials: true,
+});
+
+export async function register(username, email, password) {
+  try {
+    const response = await api.post("/register", {
+      username,
+      email,
+      password,
+    });
+
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function login(username, password) {
+  try {
+    const response = await api.post("/login", {
+      username,
+      password,
+    });
+
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function getMe() {
+  try {
+    const response = await api.get("/get-me");
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+}
