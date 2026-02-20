@@ -25,26 +25,32 @@ async function followUserController(req, res) {
         });
     }
 
-    // Kahi pahle se follow toh nahi krte ??
-    const isAlreadyFollowing = await followModel.findOne({
+    // Kahi pahle se request toh nahi ki hui hai ??
+    const isAlreadyRequested = await followModel.findOne({
         follower: followerUsername,
         followee: followeeUsername,
     });
 
-    if (isAlreadyFollowing) {
+    if (isAlreadyRequested) {
         return res.status(200).json({
-            message: "You are already following this user.",
-            follow: isAlreadyFollowing,
+            message:
+                isAlreadyRequested.status === "pending"
+                    ? "Your follow request is pending."
+                    : isAlreadyRequested.status === "accepted"
+                      ? "You are already following this user."
+                      : "Your follow request was rejected.",
+            follow: isAlreadyRequested,
         });
     }
 
+    // status default add ho jaega, "pending" is default status.
     const followRecord = await followModel.create({
         follower: followerUsername,
         followee: followeeUsername,
     });
 
     res.status(201).json({
-        message: `You are now following ${followeeUsername}`,
+        message: `Your follow request to ${followeeUsername} is submitted.`,
         follow: followRecord,
     });
 }
@@ -56,6 +62,7 @@ async function unfollowUserController(req, res) {
     const isUserFollowing = await followModel.findOne({
         follower: followerUsername,
         followee: followeeUsername,
+        status: "accepted",
     });
 
     if (!isUserFollowing) {
@@ -71,7 +78,105 @@ async function unfollowUserController(req, res) {
     });
 }
 
+// Ek user ko kon kon followe kr rha hai.
+// follower => follow krne wala, followee => jise follow kiya ja rha h.
+async function getFollowersController(req, res) {
+    const username = req.params.username;
+
+    const followers = await followModel.find({
+        followee: username,
+        status: "accepted",
+    });
+
+    res.status(200).json({
+        message: "Followers fetched successfully",
+        followers,
+    });
+}
+
+// Ek user kin kin ko follow kr rha hai.
+async function getFolloweesController(req, res) {
+    const username = req.params.username;
+
+    const followees = await followModel.find({
+        follower: username,
+        status: "accepted",
+    });
+
+    res.status(200).json({
+        message: "Followees fetched successfully",
+        followees,
+    });
+}
+
+async function pendingFollowRequestsController(req, res) {
+    const username = req.user.username;
+
+    const pendingRequests = await followModel.find({
+        followee: username,
+        status: "pending",
+    });
+
+    res.status(200).json({
+        message: "Pending follow requests fetched successfully",
+        pendingRequests,
+    });
+}
+
+async function acceptFollowRequestController(req, res) {
+    const follower = req.params.follower; // Jiski follow request accept krni hai.
+    const followee = req.user.username; // Jo follow request accept kr rha hai.
+
+    const followRequest = await followModel.findOne({
+        follower,
+        followee,
+        status: "pending",
+    });
+
+    if (!followRequest) {
+        return res.status(404).json({
+            message: "Follow request not found.",
+        });
+    }
+
+    followRequest.status = "accepted";
+    await followRequest.save();
+
+    res.status(200).json({
+        message: `You have accepted the follow request from ${follower}.`,
+        followRequest,
+    });
+}
+
+async function rejectFollowRequestController(req, res) {
+    const follower = req.params.follower;
+    const followee = req.user.username;
+
+    const followRequest = await followModel.findOne({
+        follower,
+        followee,
+        status: "pending",
+    });
+
+    if (!followRequest) {
+        return res.status(404).json({
+            message: "Follow request not found.",
+        });
+    }
+
+    await followModel.findByIdAndDelete(followRequest._id);
+
+    res.status(200).json({
+        message: `You have rejected the follow request from ${follower}.`,
+    });
+}
+
 module.exports = {
     followUserController,
     unfollowUserController,
+    getFollowersController,
+    getFolloweesController,
+    pendingFollowRequestsController,
+    acceptFollowRequestController,
+    rejectFollowRequestController,
 };
