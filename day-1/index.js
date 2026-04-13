@@ -4,7 +4,7 @@
 // open terminal and write $node index.js
 // Output => Hello world
 // for (let i = 0; i < 100; i++) console.log(i);
-
+ 
 //
 // Using packages
 // install package from https://www.npmjs.com
