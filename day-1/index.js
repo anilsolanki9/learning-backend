@@ -10,8 +10,8 @@
 // install package from https://www.npmjs.com
 // npm i <package-name>
 // to use package require it, and store in a constant
-// const catMe = require("cat-me");
-// console.log(catMe()); // random cat get printed each time
+const catMe = require("cat-me");
+console.log(catMe()); // random cat get printed each time
 // run the script using $node jsfilename
 
 //
