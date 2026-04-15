@@ -1,8 +1,8 @@
 # Day 3
 
-Start server by -> npm init -y
-Create file -> server.js
-Install express package -> npm i express
+Start server by -> `npm init -y`
+Create file -> `server.js`
+Install express package -> `npm i express`
 
 ---
 
@@ -10,15 +10,23 @@ On server creation its not by default starts , so to the server we must use app.
 
 ```js
 const express = require("express");
-const app = express();
+
+const app = express(); // express Server instance created and saved into app, not started yet
+
 app.listen(3000, () => {
   console.log("Server is running on port: 3000");
-});
+}); // server starts
 ```
 
 ---
 
-When we do modifications, server still runs on old code, so to restart server automatically on changes
+- Run the server
+
+```bash
+node server.js
+```
+
+- When we do modifications, server still runs on old code, so to restart server automatically on changes
 
 ```bash
 npx nodemon server.js
@@ -26,7 +34,7 @@ npx nodemon server.js
 
 ---
 
-By default express server can't read req.body data. So to give our server power to read req.body, we use a middleware
+By default express server can't read `req.body` data, because its a stream. So to give our server power to read `req.body`, we use a middleware
 
 ```js
 app.use(express.json());
@@ -44,17 +52,28 @@ app.listen(3000, () => {
 });
 ```
 
-The callback is executed when server is ready to listen to user requests.
+The callback is executed when server is running and ready to listen to user requests.
+
+---
 
 # API
 
-API => communication between two devices is done using APIs. An api is a set of rules and protocols that enables diff software programs to communicate and exchange data with each other.
+API => Application Programming Interface.
 
-It acts as a middleman, which allow one application to request service/data from anoter.
+- Communication between two devices on internet is done using APIs.
+- An api is a set of rules and protocols that enables different software programs to communicate and exchange data with each other.
 
-Client Side <-----API----> Server Side
+It acts as a middleman, which allow one application to request service/data from another.
 
-Instagram App <-----API-----> Instagram Server
+```bash
+Client Side <---data---> API <---data---> Server Side
+
+Instagram App <---data---> API <---data---> Instagram Server
+```
+
+- API can be of different types.
+
+---
 
 ## REST
 
@@ -66,7 +85,7 @@ REST => Representational State Transfer.
 - Resource can be anything (users, products, documents etc.) that can be accessed via RESTful API. each resource has an Unique Identifier(URI).
 - Resources are stored in JSON format.
 - Stateless communication => Each request from client to server contains all needed information. Server donot store any state about client sessions.
-- HTP Status Codes => Server use HTTP Status codes to indicate the outcomes of a client's request.
+- HTTP Status Codes => Server use HTTP Status codes to indicate the outcomes of a client's request.
 
 ---
 
@@ -77,19 +96,19 @@ https://drive.google.com/file/d/12zFQ5O_YVCvIqPSsGfJElvhBOvbhYr1R/view?usp=shari
 
 # REST API
 
-REST API
+## Main two rules of REST APIs
 
 - Protocols used in these API is http/https.
 - Communication kis type ka hai uske hisab se decide hota hai ki Method kya hoga. (GET, POST, PUT, PATCH, DELETE) , ANY?, HEAD?, OPTION?
-- GET => Data server se mangane ke liye
-- POST => Server pe kuch create krne ke liye
-- PUT => Resource data already on server and we want to update whole resource data.
-- PATCH => Resource ka ek chota sa part update krna hai
-- DELETE => Resource ko delete krna hai.
+- **GET** => Server se Data mangane ke liye
+- **POST** => Server pe kuch create krne ke liye (eg. user account, user post, user comment). Data is sent with `req.body` .
+- **PUT** => Resource data already on server and we want to update whole resource data.
+- **PATCH** => Resource ka ek chota sa part update krna hai.
+- **DELETE** => Resource ko delete krna hai.
 
 Idepotent => same input ka same output.
 
-- Post => not idempotent,
+- Post => not idempotent, because on all request a different task will be performed.
 - Rest all methods are idempotent.
 
 Safe method => Don't modify the server data. (GET, HEAD, OPTIONS are safe methods.)
@@ -143,14 +162,16 @@ Safe method => Don't modify the server data. (GET, HEAD, OPTIONS are safe method
 
 - User can create a note
 - Can see all the notes
+- Update a note
+- Delete a note
 
 API Client
 App -> Postman
-Extension -> Thunder Client
+(Alternative) VS Code Extension -> `Thunder Client`
 
 ```js
 app.post("/notes", (req, res) => {
-  notes.push(req.body); // req.body me aane vale data ko
+  notes.push(req.body); // req.body me aane vale data ko notes array me push kr diya.
   res.send("Note created sucesfully");
 });
 ```
@@ -158,17 +179,17 @@ app.post("/notes", (req, res) => {
 - req me client se aane vala sara data `req` me aata hai.
 - server ko koi response bhejna hai toh `res` ka use krna padega.
 
-Here comes the introduction to `express.json()` middleware.
+## Middleware : express.json()
 
 - By default req.body ka data express nahi padh pata.
 - Usko enable krne ke liye ki woh req.body me aane vala data padh paye, uske liye we use middleware `express.json()`
-- app.use() means we are using a middleware.
+- `app.use()` means we are using a middleware. `express.json()` is a middleware.
 
 ```js
 app.use(express.json());
 ```
 
-postmam pe data bhejne ke liye
+postman se server request ke sath data bhejne ke liye
 
 - body -> raw -> JSON format
 
@@ -179,4 +200,31 @@ postmam pe data bhejne ke liye
 }
 ```
 
+This data to server is sent to the server in `req.body`
+
 ---
+
+```js
+const notes = [
+  {
+    title: "test title 1",
+    description: "test description 1",
+  },
+  {
+    title: "test title 2",
+    description: "test description 2",
+  },
+];
+```
+
+# Postman
+
+- New workspace
+- new request, choose method, put endpoint url. send.
+- Data sending from Postman to server -> Body -> Raw -> JSON
+
+- Frontend to backend data communication `JSON` format me hota hai.
+- `req` => frontend se sara data isi me aata hai,
+- `res` => backend (server) se data frontend ki taraf isi se jata h.
+
+- Two api can have same endpoint but, they must have diff methods, 

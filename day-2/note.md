@@ -62,4 +62,19 @@ npx nodemon server.js
 # Deploying a server
 
 - Make the code available to your github
+- render.com
+- Continue with github while signing in.
+- New -> Web Service
+- Select Project
+- Branch -> main
+- Build command -> npm i
+- Start command -> node server.js
+- Free
+- Deploye
 
+---
+
+- We can modify the root of the server, by this way we can save the time of deploying every project again as a ne service.
+- Just change the root directpory path to where your server.js file is present
+
+---
