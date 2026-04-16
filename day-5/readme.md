@@ -1,12 +1,15 @@
-- Mongo db Atlas Download kro.
-- Sign UP
+# Setting up MongoDB Account
+
+- Mongo db Atlas pe jaaoo.
+- Sign UP to MongoDB Atlas
 - Projects -> View all project -> Create project
 - AWS, Create deployment
 - Credentials, Username , Password
 - These credentials are used to connect to Cluster in th MongoDB Compass.
 - These Users can be of many types (Atlas Admin, read/write, read only)
 - Conect -> Compass -> Copy Conection String
-- MONGO DB CompassInstall Kar lo.
+- MONGO DB Compass Install Kar lo.
+- In MongoDB Atlas
 - Security -> Database & Network Access -> IP Access List -> Allow from anywhere !!
 
 # MongoDB
@@ -103,7 +106,7 @@ const noteSchema = new mongoose.Schema(
 
 Model
 
-- Wrapper arounf each Schema, Used to perform `CRUD` Operations.
+- Wrapper around each Schema, Used to perform `CRUD` Operations.
 - Creates an documents dollection for the Schema, and save all documents created with the schema in that collection.
 - If collection is not present then it creates the collection.
 
@@ -164,11 +167,7 @@ const notes = await noteModel.find({ title: "I am title" });
 - U => Update Data
 
 ```js
-const updatedNote = await noteModel.findByIdAndUpdate(
-  noteId,
-  { title: "New updates title" },
-  { new: true },
-);
+const updatedNote = await noteModel.findByIdAndUpdate(noteId, { title: "New updates title" }, { new: true });
 ```
 
 IMP Operatoions

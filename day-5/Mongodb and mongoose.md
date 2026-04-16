@@ -10,11 +10,10 @@ Example document:
 
 ```json
 {
-"title":"Learn MongoDB",
-"description":"MongoDB basics",
-"createdAt":"2026-02-05"
+  "title": "Learn MongoDB",
+  "description": "MongoDB basics",
+  "createdAt": "2026-02-05"
 }
-
 ```
 
 ---
@@ -24,9 +23,9 @@ Example document:
 - **MongoDB Atlas** = Cloud-hosted MongoDB service.
 - No local DB needed for production.
 - Provides:
-    - Free cluster
-    - Auto backups
-    - Security & scaling
+  - Free cluster
+  - Auto backups
+  - Security & scaling
 
 Connection string example:
 
@@ -41,9 +40,9 @@ mongodb+srv://username:password@cluster0.mongodb.net/myDB
 
 - **Mongoose** is an **ODM (Object Data Modeling)** library.
 - Used to:
-    - Define **Schema**
-    - Create **Models**
-    - Interact with MongoDB easily
+  - Define **Schema**
+  - Create **Models**
+  - Interact with MongoDB easily
 
 Install:
 
@@ -57,12 +56,12 @@ npm install mongoose
 ## 4. Connecting MongoDB with Mongoose
 
 ```jsx
-const mongoose =require("mongoose");
+const mongoose = require("mongoose");
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() =>console.log("DB Connected"))
-  .catch(err =>console.log(err));
-
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("DB Connected"))
+  .catch((err) => console.log(err));
 ```
 
 ---
@@ -76,19 +75,21 @@ mongoose.connect(process.env.MONGO_URI)
 Example:
 
 ```jsx
-const mongoose =require("mongoose");
+const mongoose = require("mongoose");
 
-const noteSchema =new mongoose.Schema({
-title: {
-type:String,
-required:true
+const noteSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
   },
-description: {
-type:String,
-required:true
-  }
-}, {timestamps:true });
-
+  { timestamps: true },
+);
 ```
 
 ### Common Schema Types
@@ -112,12 +113,10 @@ required:true
 
 ```jsx
 constNote = mongoose.model("Note", noteSchema);
-module.exports =Note;
-
+module.exports = Note;
 ```
 
 > `Note` → MongoDB collection becomes `notes`
-> 
 
 ---
 
@@ -130,22 +129,20 @@ module.exports =Note;
 ### Method: `create()`
 
 ```jsx
-const note =awaitNote.create({
-title:"MongoDB",
-description:"Learn CRUD"
+const note = await Note.create({
+  title: "MongoDB",
+  description: "Learn CRUD",
 });
-
 ```
 
 ### Using `save()`
 
 ```jsx
-const note =newNote({
-title:"Node.js",
-description:"Backend basics"
+const note = new Note({
+  title: "Node.js",
+  description: "Backend basics",
 });
 await note.save();
-
 ```
 
 ---
@@ -155,29 +152,25 @@ await note.save();
 ### `find()` → Get ALL documents
 
 ```jsx
-const notes =awaitNote.find();
-
+const notes = await Note.find();
 ```
 
 ### `findOne()` → Get FIRST matching document
 
 ```jsx
-const note =awaitNote.findOne({title:"MongoDB" });
-
+const note = await Note.findOne({ title: "MongoDB" });
 ```
 
 ### `findById()` → Get by `_id`
 
 ```jsx
-const note =awaitNote.findById("65c0a9b...");
-
+const note = await Note.findById("65c0a9b...");
 ```
 
 ### `find()` with condition
 
 ```jsx
-const notes =awaitNote.find({title:"MongoDB" });
-
+const notes = await Note.find({ title: "MongoDB" });
 ```
 
 ---
@@ -187,12 +180,11 @@ const notes =awaitNote.find({title:"MongoDB" });
 ### `findByIdAndUpdate()`
 
 ```jsx
-const updatedNote =awaitNote.findByIdAndUpdate(
+const updatedNote = await Note.findByIdAndUpdate(
   noteId,
-  {title:"Updated Title" },
-  {new:true }// returns updated document
+  { title: "Updated Title" },
+  { new: true }, // returns updated document
 );
-
 ```
 
 ### Important Options
@@ -207,22 +199,19 @@ const updatedNote =awaitNote.findByIdAndUpdate(
 ### `findByIdAndDelete()`
 
 ```jsx
-awaitNote.findByIdAndDelete(noteId);
-
+await Note.findByIdAndDelete(noteId);
 ```
 
 ### `deleteOne()`
 
 ```jsx
-awaitNote.deleteOne({_id: noteId });
-
+await Note.deleteOne({ _id: noteId });
 ```
 
 ### `deleteMany()`
 
 ```jsx
-awaitNote.deleteMany({title:"Test" });
-
+await Note.deleteMany({ title: "Test" });
 ```
 
 ---
@@ -231,33 +220,28 @@ awaitNote.deleteMany({title:"Test" });
 
 ```jsx
 // CREATE
-app.post("/api/notes",async (req, res) => {
-const note =awaitNote.create(req.body);
+app.post("/api/notes", async (req, res) => {
+  const note = await Note.create(req.body);
   res.json(note);
 });
 
 // READ
-app.get("/api/notes",async (req, res) => {
-const notes =awaitNote.find();
+app.get("/api/notes", async (req, res) => {
+  const notes = await Note.find();
   res.json(notes);
 });
 
 // UPDATE
-app.patch("/api/notes/:id",async (req, res) => {
-const note =awaitNote.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    {new:true }
-  );
+app.patch("/api/notes/:id", async (req, res) => {
+  const note = await Note.findByIdAndUpdate(req.params.id, req.body, { new: true });
   res.json(note);
 });
 
 // DELETE
-app.delete("/api/notes/:id",async (req, res) => {
-awaitNote.findByIdAndDelete(req.params.id);
-  res.json({message:"Deleted" });
+app.delete("/api/notes/:id", async (req, res) => {
+  awaitNote.findByIdAndDelete(req.params.id);
+  res.json({ message: "Deleted" });
 });
-
 ```
 
 ---
