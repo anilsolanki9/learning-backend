@@ -10,7 +10,7 @@ const App = () => {
   const [noteDetails, setNoteDetails] = useState({});
 
   const fetchNotes = async () => {
-    const response = await axios.get("http://localhost:3000/api/notes");
+    const response = await axios.get("https://notes-app-tpwm.onrender.com/api/notes");
     setNotes(response.data.notes);
   };
 
@@ -19,7 +19,7 @@ const App = () => {
   }, []);
 
   const createNote = async (title, description) => {
-    await axios.post("http://localhost:3000/api/notes", {
+    await axios.post("https://notes-app-tpwm.onrender.com/api/notes", {
       title,
       description,
     });
@@ -28,7 +28,7 @@ const App = () => {
   };
 
   const updateNote = async (title, description) => {
-    await axios.patch(`http://localhost:3000/api/notes/${noteId}`, {
+    await axios.patch(`https://notes-app-tpwm.onrender.com/api/notes/${noteId}`, {
       title,
       description,
     });
@@ -42,7 +42,7 @@ const App = () => {
     let res = confirm("Do you really wants to delete this note?");
     console.log(res);
     if (res) {
-      await axios.delete(`http://localhost:3000/api/notes/${id}`);
+      await axios.delete(`https://notes-app-tpwm.onrender.com/api/notes/${id}`);
       await fetchNotes();
     } else {
       alert("Note not deleted");
