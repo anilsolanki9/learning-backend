@@ -94,6 +94,10 @@ axios.get("http://localhost:3000/notes").then((data) => {
 });
 ```
 
+- Dont ever put api call in open, and dont set state variable directly in component,
+- Otherwise, when state variable chantge (the component re renders) and thus it creates an infinite call loop.
+- Thus we use useState or functions to call APIs.
+
 ### CORS Error
 
 - On this API call, We will get error => CORS Policy Error
@@ -173,3 +177,52 @@ app.use("*name", (req, res) => {
 * `http://localhost:3000/assets/index-C86sZUPU.css`
 * `http://localhost:3000/assets/index-BRzChCtq.js`
 * can be accessed
+
+# FullStack Deployment
+
+- Untill now, we are using frontend and backend on different ports. Now we will integrate them
+- Frontend -> `npm run build`
+- We get dist folder, and html, css, js files in it.
+- Create a folder on Backend -> Backend/public
+- Move all the files of `dist/` into `public/`
+
+- WildCard ke liye, (Anonymous endpoint,send index.html)
+- `__dirname` gives the path till the parent directory of current file., for app.js its shsjsjs/sjss/sysyss/src tk ka path.
+
+- Make sure to place this API logic, at the end of any other API calls.
+
+```js
+const path = require("path"); // To get absolute path of assets
+
+app.use("*name", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "public/index.html"));
+});
+```
+
+- index.html to chlo load ho gayi, but css and js files, acess nahiho pati by default, so, unko enable krne ke liye.
+- Make files of `public` available globally, For this we use another middleware.
+- Make sure to place this static endpoints logic before any API logic.
+
+```js
+app.use(express.static("./public"));
+```
+
+### Updatation in UI
+
+- Update code of frontend, do `npm run build` again, then, copy paste dist/ files and paste in public.
+
+## Deployment Final Step
+
+- Make commit, push to github
+- Render.com => Deploy 
+- While updating the project, Change the root directory, and change environment variable keys. (Environment)
+
+- There is a problem, 
+- When we wrote our react app code, In API calling we used the api url as `http://localhost:3000` , thus Apis wond work, 
+- because now our backend is depoloyed on a url which looks like this `https://notes-app-tpwm.onrender.com/`
+- Thus we will change the api urls, then again `npm run build`
+- Again copy paste code files, and again push the code, and run deploy in render.
+
+
+
+

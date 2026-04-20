@@ -46,7 +46,7 @@ authRouter.post("/register", async (req, res) => {
 
   /**
    * Store token in cookie storage of client. cookies is an object.
-   * cookies me token name ki property me token save ho jaega.
+   * cookies me token name ki property me token save ho jaega. To perform this, we use cookie-parser middleware in app.js
    */
   res.cookie("token", token);
 
