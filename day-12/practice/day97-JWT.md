@@ -134,4 +134,28 @@ userSchema = {
 - npm i jsonwebtoken
 - require jwt in auth.routes.js
 - get JWT_SECRET from `https://jwtsecrets.com/`, save it in `.env`
-- JWT decode, 
+- JWT decode, website se hum token ka data dekh skte h.
+- jwt JWT_SECRET se token ko sirf sign krta h, na ki encrypt krta h, Yeh sirf isliye kam aata h ki, token hmara hi banaya hua h ya nahi.
+- signed token= => header.paylod.signature => header and payload basic base64 convert hote h, its a basic format conversion which can be reversed to read the data (and thats why we never put critical info in token), signature is made up by data+jwt_secret ke hashing sha256 se, it cant be undo, so we cant read jwt key by token.
+- Then token user ke pas bhej diya jata h, then jb bhi user request krega to uske sath token bhi ayega.
+
+- Cookies storage (Client Side) => Iska access direct backend me kiya ja skta h. Server Can read-write to-&-from cookie storage.
+
+- Jab bhi token create hoga tb, hum us token ko cookie storage me save kr denge. Iske liye ek or package chahiye `cookie-parser`
+- use cookie-parser as an middleware
+- `res.cookie("token", token)`
+
+- Token sirf 2 jagah create hota h, registration ya login.
+- Token can be set to expire after a time preiod.
+
+### Registration
+
+```bash
+user (userdata) ---> register ---> server (Check for already existing, Save to DB, create token, send back token to client side cookie-storage)
+```
+
+### Login
+
+```bash
+
+```
