@@ -127,12 +127,14 @@ authRouter.post("/login", async (req, res) => {});
 Here `async (req, res) => {}` this is called callback or **controller**
 
 ## Hasing
+
 - Properties
 - `Same text inout` ---> `Same hash output`
-- Can't be reversed, means `Hash output` ---> `Text input`  (❌)
+- Can't be reversed, means `Hash output` ---> `Text input` (❌)
 
 Encryption ---> Two way (Encrypt decrypt)
 Hashing ----> One way (encrypt)
 
+---
 
-
+To Prevent JWT(jsonwebtoken) on client side to be prevented from XSS attacks, we send a cookie with the HttpOnly flag set, it prevents XSS (Cross-site scription) attacks.
