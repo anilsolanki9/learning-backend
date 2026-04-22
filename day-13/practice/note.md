@@ -37,7 +37,7 @@ eg.
 In school, when a student takes addmission, he gets an ID card. If students want to access any school facility (Library etc), then he have to show the ID card, then he can use it.
 
 Similarly,
-When a user register on server, the server creates a token for the user, this token is created by using the user data (\_id, email etc.).
+When a user register on server, the server creates a token for the user, this token is created by using the user data (`_id`, email etc.).
 
 - User ---> user Data {name, email, password} ---> Server
 - Server do two works,
@@ -88,11 +88,11 @@ Validation in express => In API check for empty coming values, and return res ea
 ---
 
 - User registers (with user data)
-- Ssrver saves data to db, creates a token, sign it, 
+- Ssrver saves data to db, creates a token, sign it,
 - and give it to user
-- This token contains user data. 
-- After registeration, after the user gets the token, every new request user creates to our server, token will be send with the request. 
-- Token helps us to Authenticate user. 
+- This token contains user data.
+- After registeration, after the user gets the token, every new request user creates to our server, token will be send with the request.
+- Token helps us to Authenticate user.
 
 ---
 
@@ -103,17 +103,36 @@ Validation in express => In API check for empty coming values, and return res ea
 - jwt secret ke liye -> jwtsecret.com
 - JWT decode krne ke liye -> JWT decode
 
-- Token cookie storage me save hota hai. 
-- Cookie storage ka access server ke pass hota hai. 
+- Token cookie storage me save hota hai.
+- Cookie storage ka access server ke pass hota hai.
 
 ---
 
 # password
 
-- We must hash our password before storing it into DB. 
+- We must hash our password before storing it into DB.
 - MD5 markdown generator
 - Hash properties.
   - Same Input <===> Same Output
-  - Only One way hashing. 
-  - Normal text to Hash only. Hash to normal text is not possible. 
-  - 
+  - Only One way hashing.
+  - Normal text to Hash only. Hash to normal text is not possible.
+  -
+
+## Callback or Controller
+
+```js
+authRouter.post("/login", async (req, res) => {});
+```
+
+Here `async (req, res) => {}` this is called callback or **controller**
+
+## Hasing
+- Properties
+- `Same text inout` ---> `Same hash output`
+- Can't be reversed, means `Hash output` ---> `Text input`  (❌)
+
+Encryption ---> Two way (Encrypt decrypt)
+Hashing ----> One way (encrypt)
+
+
+
