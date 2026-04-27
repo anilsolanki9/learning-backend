@@ -25,6 +25,8 @@ https://www.github.com/ankurdotio/difference-backend-video
 
 ---
 
+---
+
 # Project Start
 
 - Create a basic server, connect to DB.
@@ -117,8 +119,138 @@ userModel.findOne({
 - If user h then, check password,
 - Then create token, and set token to cookie, res. 200
 
+## Controllers
+
+- Controllers ke liye (logic fnctions) we create new folder. filename `auth.controller.js`
 - API logic ke liye alag se `controllers` folder banao. usme auth.controller.js me functions define kro and module export as object properties kr do.
 - `module.exports = {registerControler, loginController};`
+- Import `authController`, use `authController.registerController`
+
+# Login
+
+- POST /api/auth/login
+- input username, email, password
+- ek time pe username ya email me se ek `undefined` hoga.
+
+```js
+userModel.findOne({
+  $or: [
+    {
+      username: username,
+    },
+    {
+      email: email,
+    },
+  ],
+});
+```
+
+- Because email username can be undefined so, finding `undefined:undefined` will give error, thus we do `username:undefined`
+- user nahi mile to 404
+- user mila to password ko convert krke (crypto) compare kro user.pasword se,
+- Match nahi hua to, 401 Anautorized
+- Match hone pe new token generate, and send to res cookies.
+- Send user details (username, email, profileImage) in response.
+
+---
+
+# POST
+
+- features
+
+```js
+caption:String,
+img_url:String,
+user:userId,
+createdAt:Date-time,
+```
+
+- To save data we use mongoDB database.
+- We have insta-clone database to store this apps data. In this database
+- `users` collection store userdata (`_id`, username, email, password, profileImage, bio)
+- `posts` collection store postsdata (caption, imgUrl, user:userId);
+- userId is the id of user `_id` , So ye ID users collection ke user collection se aayegi.
+- So ye jo id h wo kis user se aa rhi h, ye btana pdta h.
+
+- Frontend se backend me file data phuchane ke liye body me raw ka use nahi krte, formData format ka use krte h.
+- By default express server fileData rrad nahi kr skta h.
+- express.json() middleware text format wala data read kr lea, but formData ko nahi padh skta.
+- So we use multer to read file , `npm i multer`
+- Multer user two storage, Diskstorage, MemoryStorage
+- Diskstorage => SSD/Harddisk me data save hoga
+- MemoryStorage => File RAM me store hogi, temporary store hoti h.
+- HUM Memory storage ka use krenge, because we don't store files on our server storage.
+
+### Why we dont store files on server
+
+- If a user created a post, which obviously has an image file (size 100kb). Suppose this user ahd 2000 followers. If all users want to see the post, then total data size become 100\*2000 => 200000kb => 200MB, So total 200MB of data bandwidth (`Bandwidth => Server kitna data transfer krta hai`) will be used by the server, for only single post.
+- Server bandwidth takes pricing. eg. $0.09 per 1GB upto 10TB/month.
+- Server ki bandwidth ki pricing kaafi jyda higher rahti hai, as compares to the `Cloud Storage Provider` eg. S3, imageKit, cloudynary. These all stores files, and when requested for file , these cloud storage providers provide the file.
+
+### Multer
+
+- We use multer to power our express server to read the files comming from frontend.
+- MemotryStorage => Temporary stored, uploaded to cloud storage provider, then get removed.
+- FLOW -> Frontend (File) ---> Server (Saved in MemoryStorage) ---> Cloud storage provider (ImageKit)
+- Frontend se data req.body me aata hai, but file ka data req.file me aata hai.
+- Resources Documentation ==> `https://github.com/ankurdotio/Difference-Backend-video`
+
+## ImageKit
+
+- ImageKit documentation padho.
+- ImageKit install krna, and file ko ImageKit pe upload krna.
+
+- post routes file me multer use krenge.
+
+```js
+const multer = require("multer");
+const upload = multer({ storage: multer.memoryStorage() });
+
+postRouter.post(
+  "/",
+  upload.single("imgUrl"),
+  postController.createPostController,
+);
+// imgUrl is the name by which file is comming from frontend (input name)
+```
+
+- In post controller, we use imageKit
+
+```js
+const ImageKit = require("@imagekit/nodejs");
+const { toFile } = require("@imagekit/nodejs");
+
+const file = await client.files.upload({
+  file: await toFile(Buffer.from(req.file.buffer), req.file.originalname),
+  fileName: req.file.originalname,
+});
+```
+
+- ImageKit me folders me file save krne ke liye
+
+```js
+const file = await client.files.upload({
+  file: await toFile(Buffer.from(req.file.buffer), req.file.originalname),
+  fileName: req.file.originalname,
+  folder: "cohort-2-insta-clone-posts",
+});
+```
+
+- How do we identify which user is hitting this post endpoint ?
+- We use the token to identify the user.
+
+```js
+let decoded; // let because we will update it, Outside try because we wanna use it in the func
+try {
+  decoded = jwt.verify(token, process.env.JWT_SECRET);
+} catch (err) {
+  return res.status(401).json({
+    message: "Unauthorized access, Token is invalid",
+  });
+}
+```
+
+---
 
 ---
 
