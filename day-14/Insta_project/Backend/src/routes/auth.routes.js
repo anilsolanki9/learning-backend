@@ -1,5 +1,6 @@
 const express = require("express");
 const authController = require("../controllers/auth.controller");
+const identifyUser = require("../middlewares/auth.middleware");
 
 const authRouter = express.Router();
 
@@ -7,15 +8,8 @@ const authRouter = express.Router();
  * POST /api/auth/register
  * @param username, email, password, bio, profileImage
  */
- 
+
 authRouter.post("/register", authController.registerController);
-
-/**
- * GET /api/auth/get-me
- * @param token, return userDetails
- */
-
-authRouter.get("/get-me", authController.getMeController);
 
 /**
  * POST /api/auth/login
@@ -23,5 +17,12 @@ authRouter.get("/get-me", authController.getMeController);
  */
 
 authRouter.post("/login", authController.loginController);
+
+/**
+ * GET /api/auth/get-me
+ * @param token, return userDetails
+ */
+
+authRouter.get("/get-me", identifyUser, authController.getMeController);
 
 module.exports = authRouter;

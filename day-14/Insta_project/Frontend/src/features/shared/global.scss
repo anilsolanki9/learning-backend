@@ -1,0 +1,21 @@
+@use './button.scss';
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  background-color: #0b0d13;
+  color: rgb(220, 221, 227);
+  font-family:
+    system-ui,
+    "Segoe UI",
+    Roboto sans-serif;
+}

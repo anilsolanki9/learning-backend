@@ -4,7 +4,7 @@ require("node:dns/promises").setServers(["8.8.8.8", "8.8.4.4"]);
 const app = require("./src/app");
 const connectToDB = require("./src/config/database");
 
-connectToDB(); 
+connectToDB();
 
 // Start the server
 app.listen(process.env.PORT, () => {

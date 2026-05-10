@@ -206,11 +206,7 @@ createdAt:Date-time,
 const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
 
-postRouter.post(
-  "/",
-  upload.single("imgUrl"),
-  postController.createPostController,
-);
+postRouter.post("/", upload.single("imgUrl"), postController.createPostController);
 // imgUrl is the name by which file is comming from frontend (input name)
 ```
 
@@ -252,6 +248,10 @@ try {
 
 ---
 
+# Day-105 Followers
+
+- read [indexing](./Indexing.md) and [edge-collection](./edge-collection.md)
+
 ---
 
 # Middleware
@@ -281,7 +281,7 @@ try {
 - GET /api/posts/ ==> `identifyUser` ==> getPostController
 - GET /api/posts/details/:postid ==> `identifyUser` ==> getPostDetailsController
 
-- SO middleware is executed when an API will get called, its executed before any code.
+- So middleware is executed when an API will get called, its executed before any code.
 
 - Request jaegi middleware pe,
 - middleware bataega ki request kis user ne ki hai.
@@ -393,3 +393,58 @@ try {
 - accept then accepted for request, rejected then not friend.
 
 ---
+
+# React Architecture
+
+- UI Layer
+- Hooks (Connect UI to state)
+- State Layer
+- API Layer
+
+## UI
+
+- UI Dikhana.
+- Navigation.
+- Talks to Hooks only.
+- No Logic code. No API Call, No State manage.
+
+## Hooks
+
+- Manage krna state and API.
+- Talks to state and API.
+
+## State
+
+- Store data, Manage state.
+- loading, user, postList, error etc.
+
+## API
+
+- Talks to backend
+
+## Steps Of creation
+
+- UI -> API -> State -> Hooks
+
+---
+
+# Routing
+
+- npm i react-router
+- ***
+
+From object id in post data, to get User details we use `.populate("user")`
+
+```js
+const posts = await postModel.find().populate("user");
+```
+
+Is se user ka password bhi, post data me aa jaega, Jo ki hme nahi chahiye, Isliye password ko `select:true;` Kr do.
+
+- So for this, in user dataSchema, we make it 'select:false;' which ensures that password is not accissible.
+- To access password now we have to specifically say to access password.
+- ***
+
+## Tool To design
+
+- Google Stitch

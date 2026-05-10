@@ -14,12 +14,12 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, "Password is required."],
+    select: false, // Password is now not accissible, We have to ask it by select statement.
   },
   bio: String,
   profileImage: {
     type: String,
-    default:
-      "https://ik.imagekit.io/qjg20t8q6/default-avatar-icon-of-social-media-user-vector.jpg?updatedAt=1770788524080",
+    default: "https://ik.imagekit.io/qjg20t8q6/default-avatar-icon-of-social-media-user-vector.jpg?updatedAt=1770788524080",
   },
 });
 
