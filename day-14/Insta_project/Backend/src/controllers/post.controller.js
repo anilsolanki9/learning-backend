@@ -128,11 +128,11 @@ async function dislikePostController(req, res) {
   });
 }
 
-// Populate meke user id convert to user data in post. 
+// Populate meke user id convert to user data in post.
 // lean() to convert mongoose document to js object.
 async function getFeedController(req, res) {
   const posts = await Promise.all(
-    (await postModel.find().populate("user").lean()).map(async (post) => {
+    (await postModel.find().populate("user").sort({ _id: -1 }).lean()).map(async (post) => {
       const isLiked = await likeModel.findOne({
         post: post._id,
         user: req.user.username,
